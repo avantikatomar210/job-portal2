@@ -1,20 +1,17 @@
-import path from "path";
 import { Application } from "../models/application.model.js";
 import { Job } from "../models/job.model.js";
 import { populate } from "dotenv";
-
 export const applyJob = async (req, res) => {
   try {
     const userId = req.id;
     const jobId = req.params.id;
     if (!jobId) {
       return res.status(400).json({
-        message: "Job id is required.",
+        message: "job id is required",
         success: false,
       });
     }
-    //check if the user has applied for job
-
+    //check if the user has already applied for the job
     const existingApplication = await Application.findOne({
       job: jobId,
       applicant: userId,
@@ -22,33 +19,34 @@ export const applyJob = async (req, res) => {
     if (existingApplication) {
       return res.status(400).json({
         message: "you have already applied for this job",
-        successs: false,
-      });
-    }
-
-    // check if the job exist
-    const job = await Job.findById(jobId);
-    if (!job) {
-      return res.status(404).json({
-        message: "job not found",
         success: false,
       });
     }
-    //create a new application
+    // check if the job exists
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({
+        message: "jobs not found",
+        success: false,
+      });
+    }
+    // create a new application
     const newApplication = await Application.create({
       job: jobId,
       applicant: userId,
     });
+
     job.applications.push(newApplication._id);
     await job.save();
     return res.status(201).json({
-      message: "job applied succesfully.",
+      message: "job applied successfully",
       success: true,
     });
   } catch (error) {
     console.log(error);
   }
 };
+
 export const getAppliedJobs = async (req, res) => {
   try {
     const userId = req.id;
@@ -64,7 +62,7 @@ export const getAppliedJobs = async (req, res) => {
       });
     if (!application) {
       return res.status(404).json({
-        message: "no application",
+        message: "No Application",
         status: false,
       });
     }
@@ -76,7 +74,7 @@ export const getAppliedJobs = async (req, res) => {
     console.log(error);
   }
 };
-// admin dekhega kitne user ne apply kiya hai
+//admin dekehega kitne user ne apply kia hai
 export const getApplicants = async (req, res) => {
   try {
     const jobId = req.params.id;
@@ -89,7 +87,7 @@ export const getApplicants = async (req, res) => {
     });
     if (!job) {
       return res.status(404).json({
-        message: "job not found.",
+        message: "job not found",
         success: false,
       });
     }
@@ -101,35 +99,34 @@ export const getApplicants = async (req, res) => {
     console.log(error);
   }
 };
-
 export const updateStatus = async (req, res) => {
   try {
     const { status } = req.body;
     const applicationId = req.params.id;
-    if(!status) {
-        return res.status(400).json({
-            message: "status is required",
-            success: false
-        });
-    };
-
-    //find the application by application id
-    const application = await Application.findOne({_id: applicationId});
-    if(!application) {
-        return res.status(404).json({
-            message: "Application not found!",
-            success: false
-        });
+    if (!status) {
+      return res.status(400).json({
+        message: "status is required",
+        success: false,
+      });
     }
 
-    //update the status
+    // find the application by applicant id
+    const application = await Application.findOne({ _id: applicationId });
+    if (!application) {
+      return res.status(404).jspon({
+        message: "application not found",
+        success: false,
+      });
+    }
+
+    // update status
     application.status = status.toLowerCase();
     await application.save();
 
     return res.status(200).json({
-        message: "Status updated successfully",
-        success: true,
-      });
+      message: "status updated successfully",
+      succcess: true,
+    });
   } catch (error) {
     console.log(error);
   }
