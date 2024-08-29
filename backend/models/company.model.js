@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 const companySchema = new mongoose.Schema({
     name:{
@@ -19,7 +19,7 @@ const companySchema = new mongoose.Schema({
         type:String,
     },
     userId:{
-        type:mongoose.Schema>Types.Objectid,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required:true
     }
