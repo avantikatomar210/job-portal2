@@ -1,3 +1,4 @@
+//import {company} from "../models/company.model.js"
 import {company} from "../models/company.model.js"
 export const registerCompany = async (req,res) => {
     try{
@@ -8,7 +9,7 @@ export const registerCompany = async (req,res) => {
                 success:false
             });
         }
-        let company = await Company.findOne({name:companyName});
+        let company = await company.findOne({name:companyName});
         if(company){
             return res.status(400).json({
                 message:"You can't add some company",
@@ -29,12 +30,12 @@ export const registerCompany = async (req,res) => {
         console.log(error);
     }
 //get company by id
-const getCompanyById = async (req,res) =>{
+export const getCompanyById = async (req,res) =>{
     try{
         const companyId = req.params.id;
-        const company = await Company.findById(coppanyId);
+        const company = await Company.findById(companyId);
         if(!company){
-            return res.status(404).json8({
+            return res.status(404).json({
                 mesage:"Company not found.",
                 success:false
             })
@@ -49,7 +50,7 @@ const getCompanyById = async (req,res) =>{
     }
 
 }
-const updateCompany = async(req,res) =>{
+ export const updateCompany = async(req,res) =>{
     try{
         const {name, description, website, location} = req.body;
         const file = req.file;
