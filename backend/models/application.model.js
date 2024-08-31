@@ -6,7 +6,7 @@ const applicationSchema = new mongoose.Schema({
         ref:'Job',
         required:true
     },
-    application:{
+    applicant:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required:true
@@ -19,5 +19,5 @@ const applicationSchema = new mongoose.Schema({
     }
 
 
-},{timeseries:true});
-export const Application = mongoose.model("Application", applicationSchema);
+},{timestamps:true});
+export const Application = mongoose.model("Application", applicationSchema);    
