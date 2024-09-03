@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": [
+      "default",
+      {
+        "ignore": [
+          "font-synthesis",
+          "@layer",
+          "@layer",
+          "@layer",
+          "@layer"
+        ]
+      }
+    ]
+  }
+}
