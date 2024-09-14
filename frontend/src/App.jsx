@@ -1,13 +1,11 @@
+import React from 'react'
+import Navbar from './components/shared/Navbar'
 
-import './App.css'
-import Navbar from './components/ui/shared/Navbar'
-
-function App() {
-
+const App = () => {
   return (
     <>
+    <Navbar/>
 
-      <Navbar/>
     </>
   )
 }
