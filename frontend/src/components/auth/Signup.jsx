@@ -6,12 +6,17 @@ import { RadioGroup} from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { USER_API_END_POINT } from "./utils/constant";
+import axios from "axios";
 
 const Signup = () => {
     const [input, setInput] = useState({
-        email:"",
-        password:"",
-        role:""
+      fullname:"",
+      email:"",
+      phoneNumber:"",
+      password:"",
+      role:"",
+      file:""
     });
     const navigate = useNavigate();
 
@@ -63,11 +68,11 @@ const Signup = () => {
           <h1 className="font-bold text-xl mb-5">Sign Up</h1>
           <div className="my-2">
             <Label>full Name</Label>
-            <Input type="text" value={input.fullname} name="fullname" onChange={changeEventHandler} placeholder="patel" />
+            <Input type="text" value={input.fullname} name="fullname" onChange={changeEventHandler} placeholder="Fullname" />
           </div>
           <div className="my-2">
             <Label>Email</Label>
-            <Input type="email" value={input.email} name="email"  onChange={changeEventHandler} placeholder="patel@gmail.com" />
+            <Input type="email" value={input.email} name="email"  onChange={changeEventHandler} placeholder="Email@gmail.com" />
           </div>
           <div className="my-2">
             <Label>Phone Number</Label>
@@ -75,7 +80,7 @@ const Signup = () => {
           </div>
           <div className="my-2">
             <Label>Password</Label>
-            <Input type="password" value={input.password} name="password" onChange={changeEventHandler} placeholder="patel" />
+            <Input type="password" value={input.password} name="password" onChange={changeEventHandler} placeholder="password" />
           </div>
           <div className="flex items-center justify-between">
             <RadioGroup className="flex items-center gap-4 my-5">
