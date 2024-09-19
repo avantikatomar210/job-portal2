@@ -4,45 +4,40 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "sonner";
+import { USER_API_END_POINT } from "./utils/constant";
 const Login = () => {
-    const [input, setInput] = useState({
-        fullname:"",
-        email:"",
-        phoneNumber:"",
-        password:"",
-        role:"",
-        file:""
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    role: "",
+  });
+  const navigate = useNavigate();
 
-    });
-
-    const changeEventHandler = (e) => {
-        setInput({...input, [e.target.name]:e.target.value});
+  const changeEventHandler = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
     }
-    const changeFiletHandler = (e) => {
-        setInput({...input, file:e.target.files?.[0]});
-    }
-    const submitHandler = async (e) => {
-        e.preventDefault();
-        try{
-            const res = await axios.post(`${USER_API_END_POINT}/login`, input,{
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                withCredentials:true,
-            });
-            if(res.data.success){
-                navigate("/login");
-                toast.success(res.data.message);
-            }
-        } catch (error){
-            console.log(error);
-            toast.error(error.response.data.message);
-
-        }
-        console.log(input);
-    }   
+    console.log(input);
+  };
   return (
     <div>
       <Navbar />
@@ -54,12 +49,24 @@ const Login = () => {
           <h1 className="font-bold text-xl mb-5">Login</h1>
           <div className="my-2">
             <Label>Email</Label>
-            <Input type="email" value={input.email} name="email"  onChange={changeEventHandler} placeholder="patel@gmail.com" />
+            <Input
+              type="email"
+              value={input.email}
+              name="email"
+              onChange={changeEventHandler}
+              placeholder="Email@gmail.com"
+            />
           </div>
 
           <div className="my-2">
             <Label>Password</Label>
-            <Input type="password" value={input.password} name="password" onChange={changeEventHandler} placeholder="patel" />
+            <Input
+              type="password"
+              value={input.password}
+              name="password"
+              onChange={changeEventHandler}
+              placeholder="Password"
+            />
           </div>
           <div className="flex items-center justify-between">
             <RadioGroup className="flex items-center gap-4 my-5">
@@ -68,7 +75,7 @@ const Login = () => {
                   type="radio"
                   name="role"
                   value="student"
-                  checked={input.role === 'student'}
+                  checked={input.role === "student"}
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
@@ -79,7 +86,7 @@ const Login = () => {
                   type="radio"
                   name="role"
                   value="recruiter"
-                  checked={input.role === 'recruiter'}
+                  checked={input.role === "recruiter"}
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
