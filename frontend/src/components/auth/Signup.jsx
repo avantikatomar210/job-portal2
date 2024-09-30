@@ -1,35 +1,38 @@
-import React, { useState } from "react";
-import Navbar from "../shared/Navbar";
-import { Label } from "../ui/label";
+import React, { useState, useEffect } from "react";
 import { Input } from "../ui/input";
-import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import axios from "axios";
+import { Label } from "../ui/label";
+import { RadioGroup } from "../ui/radio-group";
+import { Link } from "react-router-dom";
 import { USER_API_END_POINT } from "./utils/constant";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Navbar from "../shared/Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import store from "@/redux/store";
+import { Loader2 } from "lucide-react";
 import { setLoading } from "@/redux/authSlice";
 
 const Signup = () => {
   const [input, setInput] = useState({
-    fullname:"",
+    fullname: "",
     email: "",
-    phoneNumber:"",
+    phoneNumber: "",
     password: "",
     role: "",
-    file:"",
+    file: "",
   });
-  const {loading} = useSelector(store=>store.auth);
-  const dispatch = useDispatch();
+
+  const { loading, user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const changeFiletHandler = (e) => {
-    setInput({ ...input, file:e.target.files?.[0] });
+
+  const changeFileHandler = (e) => {
+    setInput({ ...input, file: e.target.files?.[0] });
   };
 
   const submitHandler = async (e) => {
@@ -55,23 +58,23 @@ const Signup = () => {
         navigate("/login");
         toast.success(res.data.message);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
-    }
-    finally{
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data.message);
+    } finally {
       dispatch(setLoading(false));
     }
-    console.log(input);
+    console.log(input)
   };
   return (
     <div>
+    
       <Navbar/>
       <div className="flex items-center justify-center max-w-7xl mx-auto">
         <form
-        onSubmit={submitHandler}
-          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"></form>
-        
+          onSubmit={submitHandler}
+          className="w-1/2 border border-gray-200 rounded-md p-4 my-10 "
+        >
           <h1 className="font-bold text-xl mb-5">Sign Up</h1>
           <div className="my-2">
             <Label>Full Name</Label>
@@ -90,7 +93,7 @@ const Signup = () => {
               value={input.email}
               name="email"
               onChange={changeEventHandler}
-              placeholder="Email@gmail.com"
+              placeholder="email@gmail.com"
             />
           </div>
           <div className="my-2">
@@ -100,7 +103,7 @@ const Signup = () => {
               value={input.phoneNumber}
               name="phoneNumber"
               onChange={changeEventHandler}
-              placeholder="888888888"
+              placeholder="000000-00000"
             />
           </div>
           <div className="my-2">
@@ -120,7 +123,7 @@ const Signup = () => {
                   type="radio"
                   name="role"
                   value="student"
-                  checked={input.role === 'student'}
+                  checked={input.role === "student"}
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
@@ -143,34 +146,34 @@ const Signup = () => {
               <Input
                 accept="image/*"
                 type="file"
-                onChange={changeFiletHandler}
+                onChange={changeFileHandler}
                 className="cursor-pointer"
               />
             </div>
           </div>
           {loading ? (
-          <Button className="w-full my-4">
-              {" "}
-              <Loader2 className="mr-2 h-4 animate-spin" />
-              Please wait
+            <Button className="w-full my-4">
+              {""}
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
             </Button>
           ) : (
             <>
-              <Button type="Submit" className="w-full my-4">
-                {"}"}
-                Signup
-              </Button>
-          
-          <span className="text-small">
+            <Button type="submit" className="w-full my-4">
+              {""}
+              Signup
+            </Button>
+            </>
+          )}
+          <span className="text-sm">
             Already have an account?{" "}
             <Link to="/login" className="text-blue-600">
               Login
             </Link>
           </span>
-        </form>
+        </form>           
       </div>
     </div>
-  )
+  );
 };
 
 export default Signup;

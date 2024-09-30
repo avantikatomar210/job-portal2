@@ -112,7 +112,7 @@ const Login = () => {
           ) : (
             <>
               <Button type="Submit" className="w-full my-4">
-                {"}"}
+                {""}
                 Login
               </Button>
               <span className="text-sm">
