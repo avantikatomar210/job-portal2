@@ -105,14 +105,14 @@ const Login = () => {
           </div>
           {loading ? (
             <Button className="w-full my-4">
-              {" "}
+              
               <Loader2 className="mr-2 h-4 animate-spin" />
               Please wait
             </Button>
           ) : (
             <>
               <Button type="Submit" className="w-full my-4">
-                {""}
+                
                 Login
               </Button>
               <span className="text-sm">
