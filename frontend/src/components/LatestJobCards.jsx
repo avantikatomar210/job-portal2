@@ -27,4 +27,3 @@ export const LatestJobCards = () => {
   );
 };
 
-export default LatestJobCards;
